@@ -27,6 +27,11 @@ public class Main {
 
 //        List<List<String>> records = new ArrayList<>();
         ArrayList<Person> people = new ArrayList<>();
+        ArrayList<Person> peopleHigher25 = new ArrayList<>();
+        int sumAge25Higher = 0;
+        int averageAge25Higher = 0; //
+
+
         try (BufferedReader br = new BufferedReader(new FileReader("adult.data"))) {
             int sid = 0;
             String line;
@@ -40,5 +45,13 @@ public class Main {
 
         }
         System.out.println("DONE");
+        for (int i = 0; i < people.size(); i++) {
+            if(people.get(i).getAge() > 25){
+                peopleHigher25.add(people.get(i));
+                sumAge25Higher += people.get(i).getAge();
+            }
+        }
+        averageAge25Higher = sumAge25Higher / (peopleHigher25.size());
     }
+
 }

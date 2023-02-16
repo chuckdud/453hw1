@@ -38,4 +38,64 @@ public class Person {
         hours_per_week = Integer.parseInt(values[12].trim());
         native_country = values[13].trim();
     }
+
+    public int getSid() {
+        return sid;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getWorkClass() {
+        return workClass;
+    }
+
+    public int getFnlwgt() {
+        return fnlwgt;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public int getEducationNum() {
+        return educationNum;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public String getRace() {
+        return race;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public int getCapital_gain() {
+        return capital_gain;
+    }
+
+    public int getCapital_loss() {
+        return capital_loss;
+    }
+
+    public int getHours_per_week() {
+        return hours_per_week;
+    }
+
+    public String getNative_country() {
+        return native_country;
+    }
 }
