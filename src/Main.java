@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,41 +25,61 @@ import java.util.Random;
 
 public class Main {
     public static ArrayList<Person> peopleHigher25 = new ArrayList<>();
+
+    public static DataQuery age25Higher;
+    public static DataQuery ageLessOneOldest;
+    public static DataQuery ageNot26;
+    public static DataQuery ageNotYoungest;
+    public static DataQuery ageOriginal;
+
     public static double sumAge25Higher = 0;
     public static double totalAge25Higher = 0;
     public static double averageAge25Higher = 0;
+
+    public static double sensitivity1 = 0;
+
 
     public static double sumLessOneOldest = 0;
     public static double totalLessOneOldest = 0;
 
     public static double averageAgeLessOneOldest = 0;
+    public static double sensitivity2 = 0;
+
 
     public static double sumAgeNot26 = 0;
     public static double totalAgeNot26 = 0;
 
     public static double averageAgeNot26 = 0;
+    public static double sensitivity3 = 0;
+
 
    public  static double sumNoYoungest = 0;
     public static double totalNoYoungest = 0;
     public static double averageAgeNoYoungest = 0;
+    public static double sensitivity4 = 0;
+
 
     public static double sumAgePeople = 0;
     public static double averageAgePeople = 0;
     public static double totalPeople = 0;
+    public static double sensitivity5 = 0;
 
 
 
 
-    public static ArrayList<Person> removeOldestAge = new ArrayList<>();
-    public static ArrayList<Person> noAge26 = new ArrayList<>();
-    public static ArrayList<Person> removeAnyYoungestAge = new ArrayList<>();
-    public static int sensitivity = 0;
 
-    public static int privacy_parameter; // epsilon
+
+
+
     public static void main(String[] args) {
 
-//        List<List<String>> records = new ArrayList<>();
+//        sList<List<String>> records = new ArrayList<>();
         ArrayList<Person> people = new ArrayList<>();
+        age25Higher = new DataQuery(0, 0, 0, 0);
+        ageNot26 = new DataQuery(0,0,0,0);
+        ageNotYoungest = new DataQuery(0,0,0,0);
+        ageLessOneOldest = new DataQuery(0,0,0,0);
+        ageOriginal = new DataQuery(0,0,0,0);
 
 
         try (BufferedReader br = new BufferedReader(new FileReader("adult.data"))) {
@@ -81,18 +102,11 @@ public class Main {
         }
         computeAverageAges();
         System.out.println(String.format("averageAgePeople: %s\n averageAge25Higher: %s\n averageAgeNot26: %s\n averageAgeLessOneOldest: %s\n averageAgeNoYoungest: %s\n",averageAgePeople, averageAge25Higher, averageAgeNot26, averageAgeLessOneOldest, averageAgeNoYoungest));
-        System.out.println( LaplaceNoiseGenerator.generateNoise(1, 0.5));
+        computeSensitivities();
+        computeLaplaceNoise(sensitivity1, sensitivity2, sensitivity3, sensitivity4, 0.5);
         System.out.println("DONE");
 
     }
-
-//    public class LaplaceNoiseGenerator {
-//        public static double generateNoise(double sensitivity, double epsilon) {
-//            Random random = new Random();
-//            double u = random.nextDouble() - 0.5;
-//            return -sensitivity * Math.signum(u) * Math.log(1 - 2 * Math.abs(u)) / epsilon;
-//        }
-//    }
 
     public static void addIfOlder(int actualAge, int ageToCompare){
         if(actualAge > ageToCompare){
@@ -128,32 +142,47 @@ public class Main {
         averageAgeNot26 = sumAgeNot26 / totalAgeNot26;
         averageAgeNoYoungest = sumNoYoungest / totalNoYoungest;
         averageAgeLessOneOldest = ( sumAgePeople - 90) / (totalPeople - 1);
+        averageAgePeople = sumAgePeople / totalPeople;
 
     }
 
-    public static void computeLaplaceNoise(){
-        System.out.println(String.format("Noisy output of dataset with age greater than 26 using  e = 0.5: \n"));
-        for (int i = 0; i < 1000; i++) {
-            System.out.println(String.format(" %s: "));
+    public static void computeSensitivities(){
+        sensitivity1 = averageAgePeople - averageAge25Higher;
+        sensitivity2 = averageAgePeople - averageAgeLessOneOldest;
+        sensitivity3 = averageAgePeople - averageAgeNot26;
+        sensitivity4 = averageAgePeople - averageAgeNoYoungest;
+    }
 
+    public static double roundTwoDecimalPlaces(double toRound){
+        DecimalFormat df = new DecimalFormat("#.##");
+        return Double.parseDouble(df.format(toRound));
+    }
+
+    public static void computeLaplaceNoise(double sensitivity1, double sensitivity2, double sensitivity3, double sensitivity4 , double epsilon){
+        System.out.print("\n-------------------------------------------------------\n");
+        System.out.print(String.format("Noisy output of dataset with age greater than 25 using. s1 = %s  e = %s: \n \n", sensitivity1, epsilon ));
+        System.out.print("-------------------------------------------------------\n");
+
+        for (int i = 0; i < 1000; i++) {
+            System.out.print(String.format("%s, ", roundTwoDecimalPlaces(averageAge25Higher + LaplaceNoiseGenerator.generateNoise(sensitivity1, 0.5))) );
         }
-        System.out.print("-------------------------------------------------------\n");
-        System.out.println(String.format("Dataset without one OLDEST AGE RECORD: \n"));
+        System.out.print("\n-------------------------------------------------------\n");
+        System.out.print(String.format("Noisy output of dataset without one oldest age record. s2 = %s  e = %s: \n \n", sensitivity2, epsilon ));
         System.out.print("-------------------------------------------------------\n");
         for (int i = 0; i < 1000; i++) {
-
+            System.out.print(String.format("%s, ", roundTwoDecimalPlaces(averageAgeLessOneOldest + LaplaceNoiseGenerator.generateNoise(sensitivity2, 0.5))) );
         }
-        System.out.print("-------------------------------------------------------\n");
-        System.out.println(String.format("Dataset with age greater than 26: \n"));
+        System.out.print("\n-------------------------------------------------------\n");
+        System.out.print(String.format("Noisy output of dataset without without any age 26. s3 = %s  e = %s: \n \n", sensitivity3, epsilon));
         System.out.print("-------------------------------------------------------\n");
         for (int i = 0; i < 1000; i++) {
-
+            System.out.print(String.format("%s, ", roundTwoDecimalPlaces(averageAgeNot26 + LaplaceNoiseGenerator.generateNoise(sensitivity3, 0.5))) );
         }
-        System.out.print("-------------------------------------------------------\n");
-        System.out.println(String.format("Dataset with age greater than 26: \n"));
+        System.out.print("\n-------------------------------------------------------\n");
+        System.out.print(String.format("Noisy output of dataset without any youngest age. s4 = %s  e = %s: \n \n", sensitivity4, epsilon));
         System.out.print("-------------------------------------------------------\n");
         for (int i = 0; i < 1000; i++) {
-
+            System.out.print(String.format("%s, ", roundTwoDecimalPlaces(averageAgeNoYoungest + LaplaceNoiseGenerator.generateNoise(sensitivity4, 0.5))) );
         }
     }
 
