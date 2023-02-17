@@ -1,6 +1,14 @@
 import java.util.Arrays;
 
 public class Person {
+
+    public enum characterisitcs{
+        RICHER,
+        YOUNGER,
+        OLDER,
+        MARRIED,
+        NOT_MARRIED
+    }
     private int sid;
     private int age;
     private String workClass;
@@ -38,6 +46,13 @@ public class Person {
         hours_per_week = Integer.parseInt(values[12].trim());
         native_country = values[13].trim();
     }
+    public boolean isOlderThan(int ageToCompare){
+        return (this.getAge() > ageToCompare);
+    }
+    public boolean isYoungerThan(int ageToCompare){
+        return (this.getAge() < ageToCompare);
+    }
+
 
     public int getSid() {
         return sid;
