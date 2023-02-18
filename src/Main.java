@@ -75,11 +75,7 @@ public class Main {
 
 //        sList<List<String>> records = new ArrayList<>();
         ArrayList<Person> people = new ArrayList<>();
-        age25Higher = new DataQuery(0, 0, 0, 0);
-        ageNot26 = new DataQuery(0,0,0,0);
-        ageNotYoungest = new DataQuery(0,0,0,0);
-        ageLessOneOldest = new DataQuery(0,0,0,0);
-        ageOriginal = new DataQuery(0,0,0,0);
+       
 
 
         try (BufferedReader br = new BufferedReader(new FileReader("adult.data"))) {

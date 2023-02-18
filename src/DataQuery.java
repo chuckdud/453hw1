@@ -6,6 +6,8 @@ public class DataQuery {
 
     private double sensitivity;
 
+
+
     public DataQuery(double average, double totalCount, double sum, double sensitivity) {
         this.average = average;
         this.totalCount = totalCount;
