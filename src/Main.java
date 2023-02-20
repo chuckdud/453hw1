@@ -113,7 +113,7 @@ public class Main {
         ArrayList<ClusterEntry> clusters = new ArrayList<>();
 
         // while we need to generalize further && we can generalize further
-        while (!checkK(people, k, suppressionBudget) && (ageGeneralization < 4 || educationGeneralization < 3 || maritalStatusGeneralization < 2 || raceGeneralization < 1)) {
+        while (ageGeneralization < 4 || educationGeneralization < 3 || maritalStatusGeneralization < 2 || raceGeneralization < 1) {
             clusters = new ArrayList<>();
 
             clusters.add(new ClusterEntry(people.get(0)));
@@ -134,7 +134,8 @@ public class Main {
                 if (!found) clusters.add(new ClusterEntry(p));
             }
 
-            // else, we need to generalize something
+            if (checkK(people, k, suppressionBudget)) break;
+
             ArrayList<String> uniqueAge = new ArrayList<>();
             ArrayList<String> uniqueEducation = new ArrayList<>();
             ArrayList<String> uniqueMaritalStatus = new ArrayList<>();
@@ -169,18 +170,32 @@ public class Main {
             }
         }
 
-        // untested
+        System.out.println(ageGeneralization);
+        System.out.println(educationGeneralization);
+        System.out.println(maritalStatusGeneralization);
+        System.out.println(raceGeneralization);
+
+        System.out.println(people.size());
+        // untested - suppress if needed
+        ArrayList<Person> toRemove = new ArrayList<>();
         for (ClusterEntry ce : clusters) {
+//            if (ce.getFreq() < k) {
+//                for (Person p : people) {
+//                    if (p.getStr_age().equals(ce.getStr_age()) && p.getEducation().equals(ce.getEducation()) &&
+//                            p.getMaritalStatus().equals(ce.getMaritalStatus()) && p.getRace().equals(ce.getRace())) {
+//                        people.remove(p);
+//                    }
+//                }
+//            }
+
             if (ce.getFreq() < k) {
-                for (Person p : people) {
-                    if (p.getStr_age().equals(ce.getStr_age()) && p.getEducation().equals(ce.getEducation()) &&
-                            p.getMaritalStatus().equals(ce.getMaritalStatus()) && p.getRace().equals(ce.getRace())) {
-                        people.remove(p);
-                    }
+                for (int i : ce.getSids()) {
+                    toRemove.add(people.get(i));
                 }
             }
         }
-        // suppress if needed before return
+        people.removeAll(toRemove);
+        System.out.println(people.size());
         return people;
     }
 
@@ -216,9 +231,9 @@ public class Main {
         int countBelow = 0;
         for (ClusterEntry ce : clusters) {
             if (ce.getFreq() < minK) minK = ce.getFreq();
-            if (ce.getFreq() < k) countBelow++;
+            if (ce.getFreq() < k) countBelow += ce.getFreq();
         }
-        return minK >= k;
+        return minK >= k || countBelow <= suppressionBudget;
     }
 
     public static void main(String[] args) {
@@ -236,8 +251,8 @@ public class Main {
 
         }
 
-        people = dataFly(people, 27, 0);
-        System.out.println(checkK(people, 27, 0));
+        people = dataFly(people, 10, 105);
+        System.out.println(checkK(people, 10, 0));
 //        for (Person p : people) {
 //            System.out.println(p.toString());
 //        }
