@@ -1,0 +1,6 @@
+Kolmogorov-Smirnov Test on arrays (25Higher - LessOneOldest) using [ epsilon 0.5 sensitivity 0.001579 ]: 0.999
+Kolmogorov-Smirnov Test on arrays (25Higher - No26) using [ epsilon 0.5 sensitivity 0.001579 ]: 0.999
+Kolmogorov-Smirnov Test on arrays (25Higher - NoYoungest) using [ epsilon 0.5 sensitivity 0.001579 ]: 0.999
+Kolmogorov-Smirnov Test on arrays (25Higher - LessOneOldest) using [ epsilon 1.0 sensitivity 0.001579 ]: 0.999
+Kolmogorov-Smirnov Test on arrays (25Higher - No26) using [ epsilon 1.0 sensitivity 0.001579 ]: 0.999
+Kolmogorov-Smirnov Test on arrays (25Higher - NoYoungest) using [ epsilon 1.0 sensitivity 0.001579 ]: 0.999

@@ -1,0 +1,6 @@
+"RMSE test on arrays (25Higher - LessOneOldest) using [ epsilon 0.5 sensitivity 0.001579 ]: 4.20172590729093
+"RMSE test on arrays (25Higher - No26) using [ epsilon 0.5 sensitivity 0.001579 ]: 3.8899969280193707
+"RMSE test on arrays (25Higher - NoYoungest) using [ epsilon 0.5 sensitivity 0.001579 ]: 3.9343668105554452
+"RMSE test on arrays (25Higher - LessOneOldest) using [ epsilon 1.0 sensitivity 0.001579 ]: 4.20172590729093
+"RMSE test on arrays (25Higher - No26) using [ epsilon 1.0 sensitivity 0.001579 ]: 3.8899969280193707
+"RMSE test on arrays (25Higher - NoYoungest) using [ epsilon 1.0 sensitivity 0.001579 ]: 3.9343668105554452
